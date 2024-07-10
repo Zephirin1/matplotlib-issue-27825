@@ -1254,7 +1254,8 @@ class _AxesBase(martist.Artist):
         self.set_ylim(y0, y1, emit=False, auto=other.get_autoscaley_on())
         self.yaxis._scale = other.yaxis._scale
 
-    #test comment
+    # test comment
+    # test comment 2
 
     def __clear(self):
         """Clear the Axes."""
