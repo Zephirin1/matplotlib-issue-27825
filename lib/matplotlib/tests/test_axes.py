@@ -9172,3 +9172,89 @@ def test_boxplot_orientation(fig_test, fig_ref):
 
         ax_test = fig_test.subplots()
         ax_test.boxplot(all_data, orientation='horizontal')
+
+
+@image_comparison(baseline_images=['sharex_axes_limit'], remove_text=True,
+                    extensions=['png'], style='mpl20')
+def test_sharex_axes_limit():
+    fig = plt.figure()
+    subfigs = fig.subfigures(1, 2)
+    (ax1, ax2) = subfigs[0].subplots(2, sharex=True)
+    ax2.plot(range(500))
+    (ax1, ax2) = subfigs[1].subplots(2, sharex=True)
+    ax1.plot(range(500))
+
+
+@image_comparison(baseline_images=['sharey_axes_limit'], remove_text=True,
+                    extensions=['png'], style='mpl20')
+def test_sharey_axes_limit():
+    fig = plt.figure()
+    subfigs = fig.subfigures(1, 2)
+    (ax1, ax2) = subfigs[0].subplots(2, sharey=True)
+    ax2.plot(range(500))
+    (ax1, ax2) = subfigs[1].subplots(2, sharey=True)
+    ax1.plot(range(500))
+
+
+@image_comparison(baseline_images=['sharex_axes_limit_cla'], remove_text=True,
+                    extensions=['png'], style='mpl20')
+def test_sharex_axes_limit_cla():
+    # Test that axes using sharex to share the x-axis keep their
+    # axes limits after one of the shared subplots is cleared.
+    fig = plt.figure()
+    subfigs = fig.subfigures(1, 2)
+    (ax1, ax2) = subfigs[0].subplots(2, sharex=True)
+    ax2.plot(range(500))
+    ax1.cla()
+    (ax1, ax2) = subfigs[1].subplots(2, sharex=True)
+    ax1.plot(range(500))
+    ax2.cla()
+
+
+@image_comparison(baseline_images=['sharey_axes_limit_cla'], remove_text=True,
+                    extensions=['png'], style='mpl20')
+def test_sharey_axes_limit_cla():
+    # Test that axes using sharey to share the y-axis keep their
+    # axes limits after one of the shared subplots is cleared.
+    fig = plt.figure()
+    subfigs = fig.subfigures(1, 2)
+    (ax1, ax2) = subfigs[0].subplots(2, sharey=True)
+    ax2.plot(range(500))
+    ax1.cla()
+    (ax1, ax2) = subfigs[1].subplots(2, sharey=True)
+    ax1.plot(range(500))
+    ax2.cla()
+
+
+@check_figures_equal(extensions=['png'])
+def test_sharex_axes_limit_compare(fig_test, fig_ref):
+    subfigs_test = fig_test.subfigures(1, 2)
+    (ax1_test, ax2_test) = subfigs_test[0].subplots(2, sharex=True)
+    ax2_test.plot(range(500))
+    ax1_test.cla()
+    (ax1_test, ax2_test) = subfigs_test[1].subplots(2, sharex=True)
+    ax1_test.plot(range(500))
+    ax2_test.cla()
+
+    subfigs_ref = fig_ref.subfigures(1, 2)
+    (ax1_ref, ax2_ref) = subfigs_ref[0].subplots(2, sharex=True)
+    ax2_ref.plot(range(500))
+    (ax1_ref, ax2_ref) = subfigs_ref[1].subplots(2, sharex=True)
+    ax1_ref.plot(range(500))
+
+
+@check_figures_equal(extensions=['png'])
+def test_sharey_axes_limit_compare(fig_test, fig_ref):
+    subfigs_test = fig_test.subfigures(1, 2)
+    (ax1_test, ax2_test) = subfigs_test[0].subplots(2, sharey=True)
+    ax2_test.plot(range(500))
+    ax1_test.cla()
+    (ax1_test, ax2_test) = subfigs_test[1].subplots(2, sharey=True)
+    ax1_test.plot(range(500))
+    ax2_test.cla()
+
+    subfigs_ref = fig_ref.subfigures(1, 2)
+    (ax1_ref, ax2_ref) = subfigs_ref[0].subplots(2, sharey=True)
+    ax2_ref.plot(range(500))
+    (ax1_ref, ax2_ref) = subfigs_ref[1].subplots(2, sharey=True)
+    ax1_ref.plot(range(500))
