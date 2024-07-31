@@ -646,7 +646,7 @@ class _AxesBase(martist.Artist):
         self._aspect = 'auto'
         self._adjustable = 'box'
         self._anchor = 'C'
-        self._stale_viewlims = {name: False for name in self._axis_names}
+        self._stale_viewlims = dict.fromkeys(self._axis_names, False)
         self._forward_navigation_events = forward_navigation_events
         self._sharex = sharex
         self._sharey = sharey
@@ -1548,7 +1548,7 @@ class _AxesBase(martist.Artist):
         Axes. If multiple properties are given, their value lists must have
         the same length. This is just a shortcut for explicitly creating a
         cycler and passing it to the function, i.e. it's short for
-        ``set_prop_cycle(cycler(label=values label2=values2, ...))``.
+        ``set_prop_cycle(cycler(label=values, label2=values2, ...))``.
 
         Form 3 creates a `~cycler.Cycler` for a single property and set it
         as the property cycle of the Axes. This form exists for compatibility
@@ -2635,7 +2635,7 @@ class _AxesBase(martist.Artist):
     @property
     def use_sticky_edges(self):
         """
-        When autoscaling, whether to obey all `Artist.sticky_edges`.
+        When autoscaling, whether to obey all `.Artist.sticky_edges`.
 
         Default is ``True``.
 
