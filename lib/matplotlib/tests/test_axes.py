@@ -9228,6 +9228,10 @@ def test_sharey_axes_limit_cla():
 
 @check_figures_equal(extensions=['png'])
 def test_sharex_axes_limit_compare(fig_test, fig_ref):
+    # Tests that axes using sharex to share the x-axis keep their
+    # axes limits after one of the shared subplots is cleared.
+    # Compares the figure where a subplot was cleared to a figure
+    # where no subplots were cleared.
     subfigs_test = fig_test.subfigures(1, 2)
     (ax1_test, ax2_test) = subfigs_test[0].subplots(2, sharex=True)
     ax2_test.plot(range(500))
@@ -9245,6 +9249,10 @@ def test_sharex_axes_limit_compare(fig_test, fig_ref):
 
 @check_figures_equal(extensions=['png'])
 def test_sharey_axes_limit_compare(fig_test, fig_ref):
+    # Tests that axes using sharey to share the y-axis keep their
+    # axes limits after one of the shared subplots is cleared.
+    # Compares the figure where a subplot was cleared to a figure
+    # where no subplots were cleared.
     subfigs_test = fig_test.subfigures(1, 2)
     (ax1_test, ax2_test) = subfigs_test[0].subplots(2, sharey=True)
     ax2_test.plot(range(500))
