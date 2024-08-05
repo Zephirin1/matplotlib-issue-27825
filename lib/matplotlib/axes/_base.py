@@ -1258,9 +1258,6 @@ class _AxesBase(martist.Artist):
         other._shared_axes["y"].join(other, self)
         other._sharey = self
 
-    # test comment
-    # test comment 2
-
     def __clear(self):
         """Clear the Axes."""
         # The actual implementation of clear() as long as clear() has to be
