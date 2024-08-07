@@ -1972,8 +1972,8 @@ class FigureCanvasBase:
         """
         Context manager temporarily setting the canvas for saving the figure::
 
-            with canvas._switch_canvas_and_return_print_method(fmt, backend) \\
-                    as print_method:
+            with (canvas._switch_canvas_and_return_print_method(fmt, backend)
+                  as print_method):
                 # ``print_method`` is a suitable ``print_{fmt}`` method, and
                 # the figure's canvas is temporarily switched to the method's
                 # canvas within the with... block.  ``print_method`` is also
@@ -2110,13 +2110,13 @@ class FigureCanvasBase:
                 "'figure', or omit the *papertype* argument entirely.")
 
         # Remove the figure manager, if any, to avoid resizing the GUI widget.
-        with cbook._setattr_cm(self, manager=None), \
-             self._switch_canvas_and_return_print_method(format, backend) \
-                 as print_method, \
-             cbook._setattr_cm(self.figure, dpi=dpi), \
-             cbook._setattr_cm(self.figure.canvas, _device_pixel_ratio=1), \
-             cbook._setattr_cm(self.figure.canvas, _is_saving=True), \
-             ExitStack() as stack:
+        with (cbook._setattr_cm(self, manager=None),
+              self._switch_canvas_and_return_print_method(format, backend)
+                 as print_method,
+              cbook._setattr_cm(self.figure, dpi=dpi),
+              cbook._setattr_cm(self.figure.canvas, _device_pixel_ratio=1),
+              cbook._setattr_cm(self.figure.canvas, _is_saving=True),
+              ExitStack() as stack):
 
             for prop in ["facecolor", "edgecolor"]:
                 color = locals()[prop]
@@ -3419,7 +3419,7 @@ class ToolContainerBase:
 
         This hook must be implemented in each backend and contains the
         backend-specific code to remove an element from the toolbar; it is
-        called when `.ToolManager` emits a `tool_removed_event`.
+        called when `.ToolManager` emits a ``tool_removed_event``.
 
         Because some tools are present only on the `.ToolManager` but not on
         the `ToolContainer`, this method must be a no-op when called on a tool

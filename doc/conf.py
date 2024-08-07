@@ -15,6 +15,7 @@ from datetime import datetime, timezone
 import logging
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
@@ -201,6 +202,17 @@ from sphinx_gallery import gen_rst
 warnings.filterwarnings('ignore', category=UserWarning,
                         message=r'(\n|.)*is non-interactive, and thus cannot be shown')
 
+
+# hack to catch sphinx-gallery 17.0 warnings
+def tutorials_download_error(record):
+    if re.match("download file not readable: .*tutorials_(python|jupyter).zip",
+                record.msg):
+        return False
+
+
+logger = logging.getLogger('sphinx')
+logger.addFilter(tutorials_download_error)
+
 autosummary_generate = True
 autodoc_typehints = "none"
 
@@ -274,6 +286,11 @@ sphinx_gallery_conf = {
     'copyfile_regex': r'.*\.rst',
 }
 
+if parse_version(sphinx_gallery.__version__) >= parse_version('0.17.0'):
+    sphinx_gallery_conf['parallel'] = True
+    # Any warnings from joblib turned into errors may cause a deadlock.
+    warnings.filterwarnings('default', category=UserWarning, module='joblib')
+
 if 'plot_gallery=0' in sys.argv:
     # Gallery images are not created.  Suppress warnings triggered where other
     # parts of the documentation link to these images.
@@ -343,8 +360,8 @@ source_suffix = '.rst'
 # This is the default encoding, but it doesn't hurt to be explicit
 source_encoding = "utf-8"
 
-# The toplevel toctree document (renamed to root_doc in Sphinx 4.0)
-root_doc = master_doc = 'index'
+# The toplevel toctree document.
+root_doc = 'index'
 
 # General substitutions.
 try:
@@ -497,10 +514,9 @@ html_theme_options = {
             f"https://matplotlib.org/devdocs/_static/switcher.json?{SHA}"
         ),
         "version_match": (
-            # The start version to show. This must be in switcher.json.
-            # We either go to 'stable' or to 'devdocs'
-            'stable' if matplotlib.__version_info__.releaselevel == 'final'
-            else 'devdocs')
+            matplotlib.__version__
+            if matplotlib.__version_info__.releaselevel == 'final'
+            else 'dev')
     },
     "navbar_end": ["theme-switcher", "version-switcher", "mpl_icon_links"],
     "navbar_persistent": ["search-button"],
